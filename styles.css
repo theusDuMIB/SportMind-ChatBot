@@ -17,7 +17,7 @@ body {
 aside {
     width: 260px;
     background: #020617;
-    padding: 20px;
+    padding: 20px 20px 20px 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -25,9 +25,16 @@ aside {
 }
 
 .logo {
-    font-size: 22px;
-    font-weight: bold;
-    color: #22c55e;
+    width: 260px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.logo > img {
+    width: 240px;
 }
 
 .new-chat {

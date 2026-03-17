@@ -31,7 +31,7 @@ app.post("/chat", async (req, res) => {
 
     // Chamando o modelo de chat
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", // ou "gpt-4" se tiver acesso
+      model: "gpt-5-mini", 
       messages: [
         {
           role: "system",
