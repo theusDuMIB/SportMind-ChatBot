@@ -16,7 +16,7 @@
             <img src="/imgs/sportmind-logo.png" alt="logo-SportMind">
         </div>
 
-        <button class="new-chat">+ Nova conversa</button>
+        <label for="input" class="new-chat">+ Nova conversa</label>
 
         <div class="conversations">
 
@@ -24,7 +24,22 @@
             <div class="chat-item">🏎️ Fórmula 1</div>
             <div class="chat-item">🏀 Basquete</div>
             <div class="chat-item">🎾 Tênis</div>
+            <div class="chat-item">🥊 Artes Marciais</div>
 
+        </div>
+
+        <!-- testando card de perfil -->
+        <div class="profile-card">
+            <img src="/imgs/perfil.png" alt="Perfil" class="profile-avatar">
+
+            <div class="profile-info">
+                <span class="profile-name">Matheus Eduardo</span>
+
+                <div class="profile-status">
+                    <span class="status-dot"></span>
+                    <span>Online</span>
+                </div>
+            </div>
         </div>
 
     </aside>
@@ -33,13 +48,21 @@
     <main>
 
         <div class="chat-header">
-            Chat esportivo
+            <h3>Seu chat sobre esportes...</h3>
+            <div class="theme-toggle" id="themeToggle">
+                <div class="toggle-track">
+                    <div class="toggle-thumb"></div> <!-- pra mudar o tema-->
+                </div>
+            </div>
         </div>
 
         <div class="messages" id="messages">
 
             <div class="message bot">
-                Olá! Sou o SportBot. Pergunte algo sobre esportes!
+                <img src="/imgs/bot.png" class="avatar">
+                <div class="bubble">
+                    Olá! Sou o SportBot. Pergunte algo sobre esportes!
+                </div>
             </div>
 
         </div>

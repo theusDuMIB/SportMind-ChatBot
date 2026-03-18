@@ -15,39 +15,60 @@ function sendMessage() {
     // Cria a mensagem do usuário
     let userMsg = document.createElement("div");
     userMsg.classList.add("message", "user");
-    userMsg.textContent = text;
+
+    userMsg.innerHTML = `
+    <img src="/imgs/perfil.png" class="avatar">
+    <div class="bubble">${text}</div>`;
+
     messages.appendChild(userMsg);
 
     input.value = "";
     messages.scrollTop = messages.scrollHeight;
 
-    // Pequeno delay para a resposta do bot parecer mais natural
+    // Delay para parecer natural
     setTimeout(async () => {
         console.log("CHEGOU NO TIMEOUT");
 
+        // 
         let botMsg = document.createElement("div");
         botMsg.classList.add("message", "bot");
 
-        // Indicador de carregamento
-        botMsg.textContent = "...";
+        botMsg.innerHTML = `
+            <img src="/imgs/bot.png" class="avatar">
+            <div class="bubble">Digitando</div>`;
+        // 
+
+        // Animação "Digitando..."
+        let bubble = botMsg.querySelector(".bubble");
+        bubble.textContent = "Digitando";
+        let dots = 0;
+
+        const typingInterval = setInterval(() => {
+            dots = (dots + 1) % 4;
+            bubble.textContent = "Digitando" + ".".repeat(dots);
+        }, 500);
+
         messages.appendChild(botMsg);
         messages.scrollTop = messages.scrollHeight;
 
         try {
             console.log("ANTES DO FETCH");
-            
-            // Chama a função que pega a resposta do servidor
+
             const responseText = await getBotResponse(text);
             console.log("DEPOIS DO FETCH");
 
-            botMsg.textContent = responseText;
+            // Para animação
+            clearInterval(typingInterval);
+
+            // Efeito digitando letra por letra
+            await typeMessage(botMsg, responseText);
 
         } catch (error) {
+            clearInterval(typingInterval);
             botMsg.textContent = "Erro ao conectar com o servidor. Verifique se o Node está rodando na porta 3001.";
             console.error("Erro na requisição:", error);
         }
 
-        // Rola novamente para baixo após a resposta chegar
         messages.scrollTop = messages.scrollHeight;
 
     }, 500);
@@ -70,7 +91,29 @@ async function getBotResponse(text) {
     return data.reply;
 }
 
-// Permite enviar a mensagem pressionando ENTER
+// Função efeito digitando
+function typeMessage(element, text) {
+    return new Promise((resolve) => {
+        let index = 0;
+        const bubble = element.querySelector(".bubble");
+        bubble.textContent = "";
+
+        function type() {
+            if (index < text.length) {
+                bubble.textContent += text.charAt(index);
+                index++;
+
+                setTimeout(type, 20); // velocidade da digitação
+            } else {
+                resolve();
+            }
+        }
+
+        type();
+    });
+}
+
+// Enviar com ENTER
 window.onload = () => {
     const inputField = document.getElementById("input");
 
@@ -80,3 +123,42 @@ window.onload = () => {
         }
     });
 };
+
+
+// mudar o tema
+const toggle = document.getElementById("themeToggle");
+
+// carregar tema salvo
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark");
+}
+
+// clique no botão
+toggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+
+  if (document.body.classList.contains("dark")) {
+    localStorage.setItem("theme", "dark");
+  } else {
+    localStorage.setItem("theme", "light");
+  }
+});
+
+// clicar nos itens e mandar mensagem pro bot
+// clique nos itens do menu (Futebol, F1, etc)
+const chatItems = document.querySelectorAll(".chat-item");
+
+chatItems.forEach(item => {
+    item.addEventListener("click", () => {
+        let texto = item.textContent;
+
+        // remove emoji (opcional)
+        texto = texto.replace(/^[^\w]+/, "").trim();
+
+        // coloca no input
+        document.getElementById("input").value = texto;
+
+        // envia mensagem
+        sendMessage();
+    });
+});
