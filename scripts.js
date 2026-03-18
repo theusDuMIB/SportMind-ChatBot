@@ -94,22 +94,12 @@ async function getBotResponse(text) {
 // Função efeito digitando
 function typeMessage(element, text) {
     return new Promise((resolve) => {
-        let index = 0;
         const bubble = element.querySelector(".bubble");
-        bubble.textContent = "";
 
-        function type() {
-            if (index < text.length) {
-                bubble.textContent += text.charAt(index);
-                index++;
+        // usa markdown direto (sem digitação)
+        bubble.innerHTML = marked.parse(text);
 
-                setTimeout(type, 20); // velocidade da digitação
-            } else {
-                resolve();
-            }
-        }
-
-        type();
+        resolve();
     });
 }
 
